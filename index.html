@@ -32,7 +32,10 @@
             --text-muted: #94a3b8;
         }
 
-        html { scroll-behavior: smooth; }
+        html { 
+            scroll-behavior: smooth; 
+            overflow-x: hidden;
+        }
 
         body { 
             font-family: 'Plus Jakarta Sans', sans-serif; 
@@ -40,6 +43,7 @@
             color: var(--text-main);
             overflow-x: hidden;
             position: relative;
+            width: 100%;
         }
 
         /* Mouse Glow Follower */
@@ -233,6 +237,7 @@
             box-shadow: 0 0 15px rgba(251, 191, 36, 0.3);
             cursor: pointer;
             transition: transform 0.3s ease;
+            flex-shrink: 0;
         }
         .award-thumb:hover {
             transform: scale(1.1) rotate(2deg);
@@ -337,6 +342,8 @@
             box-shadow: 0 0 25px rgba(56, 189, 248, 0.4);
             transition: all 0.3s ease;
             text-decoration: none;
+            display: inline-block;
+            text-align: center;
         }
         .btn-glow:hover {
             transform: translateY(-3px);
@@ -352,6 +359,8 @@
             border-radius: 30px;
             transition: all 0.3s ease;
             text-decoration: none;
+            display: inline-block;
+            text-align: center;
         }
         .btn-outline-glow:hover {
             background: rgba(255, 255, 255, 0.1);
@@ -428,71 +437,160 @@
             box-shadow: inset 0 0 20px rgba(56, 189, 248, 0.05);
             animation: fadeInSlideUp 0.5s ease-out;
         }
+
         /* Footer Modern Styling */
-.footer-section {
-    background: rgba(3, 7, 18, 0.95);
-    border-top: 1px solid rgba(255, 255, 255, 0.08);
-    position: relative;
-    z-index: 10;
-}
+        .footer-section {
+            background: rgba(3, 7, 18, 0.95);
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            position: relative;
+            z-index: 10;
+        }
 
-.footer-link {
-    color: var(--text-muted);
-    text-decoration: none;
-    transition: all 0.3s ease;
-    display: inline-block;
-}
+        .footer-link {
+            color: var(--text-muted);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: inline-block;
+        }
 
-.footer-link:hover {
-    color: var(--accent-cyan);
-    transform: translateX(4px);
-}
+        .footer-link:hover {
+            color: var(--accent-cyan);
+            transform: translateX(4px);
+        }
 
-.social-icon-btn {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    color: var(--text-main);
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.3s ease;
-    text-decoration: none;
-}
+        .social-icon-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--text-main);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
 
-.social-icon-btn:hover {
-    background: var(--accent-cyan);
-    color: #030712;
-    box-shadow: 0 0 15px var(--accent-glow);
-    transform: translateY(-3px);
-}
+        .social-icon-btn:hover {
+            background: var(--accent-cyan);
+            color: #030712;
+            box-shadow: 0 0 15px var(--accent-glow);
+            transform: translateY(-3px);
+        }
 
-.back-to-top-btn {
-    width: 42px;
-    height: 42px;
-    border-radius: 12px;
-    background: rgba(56, 189, 248, 0.1);
-    border: 1px solid rgba(56, 189, 248, 0.3);
-    color: var(--accent-cyan);
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.3s ease;
-    text-decoration: none;
-}
+        .back-to-top-btn {
+            width: 42px;
+            height: 42px;
+            border-radius: 12px;
+            background: rgba(56, 189, 248, 0.1);
+            border: 1px solid rgba(56, 189, 248, 0.3);
+            color: var(--accent-cyan);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
 
-.back-to-top-btn:hover {
-    background: var(--accent-cyan);
-    color: #030712;
-    box-shadow: 0 0 20px var(--accent-glow);
-    transform: translateY(-3px);
-}
-        
+        .back-to-top-btn:hover {
+            background: var(--accent-cyan);
+            color: #030712;
+            box-shadow: 0 0 20px var(--accent-glow);
+            transform: translateY(-3px);
+        }
+
         @keyframes fadeInSlideUp {
             from { opacity: 0; transform: translateY(15px); }
             to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ==========================================================================
+           RESPONSIVE MEDIA QUERIES FOR MOBILE, TABLETS, & IPHONES
+           ========================================================================== */
+
+        /* Extra Large Screens / Desktops */
+        @media (max-width: 1200px) {
+            .hero-title { font-size: 3.2rem; }
+        }
+
+        /* Tablets & iPads (Portrait & Landscape: 768px - 991px) */
+        @media (max-width: 991.98px) {
+            .hero-section { padding: 100px 0 60px; }
+            .hero-title { font-size: 2.8rem; }
+            :root { --profile-size: 180px; }
+            .counter-number { font-size: 2.5rem; }
+            
+            /* Navbar Collapse Mobile Menu Fix */
+            .navbar-collapse {
+                background: rgba(15, 23, 42, 0.95);
+                border-radius: 16px;
+                padding: 15px;
+                margin-top: 10px;
+                border: 1px solid rgba(255, 255, 255, 0.1);
+            }
+        }
+
+        /* Mobile Phones & iPhones (Up to 767px) */
+        @media (max-width: 767.98px) {
+            .hero-section { padding: 80px 0 50px; }
+            .hero-title { font-size: 2.2rem; }
+            :root { --profile-size: 160px; }
+            
+            .section-title { font-size: 1.8rem; margin-bottom: 40px; }
+            .counter-number { font-size: 2rem; }
+            
+            .btn-glow, .btn-outline-glow {
+                width: 100%;
+                padding: 12px 20px;
+                font-size: 0.95rem;
+            }
+
+            .award-card .d-flex {
+                flex-direction: column;
+                align-items: flex-start !important;
+            }
+            .award-thumb {
+                width: 100%;
+                height: 160px;
+            }
+
+            .timeline {
+                margin-left: 5px;
+                padding-left: 18px;
+            }
+
+            .modal-body-custom { padding: 18px; }
+            .modal-preview-img { max-height: 280px; }
+        }
+
+        /* Small Phones / iPhone SE / Mini Devices (Up to 576px) */
+        @media (max-width: 575.98px) {
+            .hero-title { font-size: 1.8rem; }
+            :root { --profile-size: 140px; }
+            
+            .glass-card { padding: 20px !important; }
+            .project-img-wrapper { height: 180px; }
+            
+            .badge-tech {
+                font-size: 0.75rem;
+                padding: 4px 10px;
+            }
+
+            .contact-info-card {
+                padding: 14px;
+                gap: 12px;
+            }
+            .contact-icon-box {
+                width: 42px;
+                height: 42px;
+                font-size: 1rem;
+            }
+        }
+
+        /* Hide Custom Cursor glow on Touch devices (Mobiles/iPads) */
+        @media (hover: none) and (pointer: coarse) {
+            .cursor-glow { display: none !important; }
         }
     </style>
 </head>
@@ -771,7 +869,7 @@
                             <img src="images/8.png" alt="MediQ Systems" class="project-img" onerror="this.src='https://via.placeholder.com/600x300/1e293b/38bdf8?text=MediQ+Healthcare+System'">
                         </div>
                         <div class="p-4 d-flex flex-column flex-grow-1">
-                            <div class="d-flex justify-content-between align-items-center mb-2">
+                            <div class="d-flex justify-content-between align-items-center mb-2 flex-wrap gap-2">
                                 <h4 class="fw-bold text-white mb-0">MediQ v2.0 - Antibiotics Usage Analysis</h4>
                                 <span class="badge bg-success text-dark"><i class="fa-solid fa-globe me-1"></i>Live</span>
                             </div>
@@ -882,7 +980,7 @@
                             <img src="images/11.png" alt="News Portal Project" class="project-img" onerror="this.src='https://via.placeholder.com/600x300/1e293b/38bdf8?text=News+Portal'">
                         </div>
                         <div class="p-4 d-flex flex-column flex-grow-1">
-                            <div class="d-flex justify-content-between align-items-center mb-2">
+                            <div class="d-flex justify-content-between align-items-center mb-2 flex-wrap gap-2">
                                 <h4 class="fw-bold text-white mb-0">Dynamic News Portal</h4>
                                 <span class="badge bg-success text-dark"><i class="fa-solid fa-globe me-1"></i>Live</span>
                             </div>
@@ -902,38 +1000,40 @@
                         </div>
                     </div>
                 </div>
-  <!-- Personal Portfolio Website Project -->
-<div class="col-md-6" data-aos="fade-up" data-aos-delay="600">
-    <div class="glass-card h-100 d-flex flex-column" data-tilt data-tilt-max="10">
-        <div class="project-img-wrapper">
-            <img src="images/12.png" alt="Personal Portfolio" class="project-img" onerror="this.src='https://via.placeholder.com/600x300/1e293b/38bdf8?text=Developer+Portfolio'">
-        </div>
-        <div class="p-4 d-flex flex-column flex-grow-1">
-            <div class="d-flex justify-content-between align-items-center mb-2">
-                <h4 class="fw-bold text-white mb-0">Developer Portfolio Website</h4>
-                <span class="badge bg-success text-dark"><i class="fa-solid fa-globe me-1"></i>Live</span>
-            </div>
-            <p class="small text-secondary mt-1 flex-grow-1">
-                A modern, high-performance personal portfolio built with interactive Glassmorphism UI, particle animations, custom light effects, dynamic project showcases, and FormSubmit email integration.
-            </p>
-            <div class="mb-3">
-                <span class="badge badge-tech">HTML5 / CSS3</span>
-                <span class="badge badge-tech">Bootstrap 5</span>
-                <span class="badge badge-tech">JavaScript</span>
-                <span class="badge badge-tech">GitHub Pages</span>
-                <span class="badge badge-tech">AOS & Canvas</span>
-            </div>
-            <div class="d-flex gap-2 mt-auto flex-wrap">
-                <a href="https://tharu003.github.io/my_portfolio/" target="_blank" class="btn btn-glow btn-sm">
-                    <i class="fa-solid fa-arrow-up-right-from-square me-1"></i> Live Demo
-                </a>
-                <a href="https://github.com/Tharu003/my_portfolio" target="_blank" class="btn btn-outline-glow btn-sm">
-                    <i class="fa-brands fa-github me-1"></i> View Code
-                </a>
-            </div>
-        </div>
-    </div>
-</div>
+
+                <!-- Personal Portfolio Website Project -->
+                <div class="col-md-6" data-aos="fade-up" data-aos-delay="600">
+                    <div class="glass-card h-100 d-flex flex-column" data-tilt data-tilt-max="10">
+                        <div class="project-img-wrapper">
+                            <img src="images/12.png" alt="Personal Portfolio" class="project-img" onerror="this.src='https://via.placeholder.com/600x300/1e293b/38bdf8?text=Developer+Portfolio'">
+                        </div>
+                        <div class="p-4 d-flex flex-column flex-grow-1">
+                            <div class="d-flex justify-content-between align-items-center mb-2 flex-wrap gap-2">
+                                <h4 class="fw-bold text-white mb-0">Developer Portfolio Website</h4>
+                                <span class="badge bg-success text-dark"><i class="fa-solid fa-globe me-1"></i>Live</span>
+                            </div>
+                            <p class="small text-secondary mt-1 flex-grow-1">
+                                A modern, high-performance personal portfolio built with interactive Glassmorphism UI, particle animations, custom light effects, dynamic project showcases, and FormSubmit email integration.
+                            </p>
+                            <div class="mb-3">
+                                <span class="badge badge-tech">HTML5 / CSS3</span>
+                                <span class="badge badge-tech">Bootstrap 5</span>
+                                <span class="badge badge-tech">JavaScript</span>
+                                <span class="badge badge-tech">GitHub Pages</span>
+                                <span class="badge badge-tech">AOS & Canvas</span>
+                            </div>
+                            <div class="d-flex gap-2 mt-auto flex-wrap">
+                                <a href="https://tharu003.github.io/my_portfolio/" target="_blank" class="btn btn-glow btn-sm">
+                                    <i class="fa-solid fa-arrow-up-right-from-square me-1"></i> Live Demo
+                                </a>
+                                <a href="https://github.com/Tharu003/my_portfolio" target="_blank" class="btn btn-outline-glow btn-sm">
+                                    <i class="fa-brands fa-github me-1"></i> View Code
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </div>
     </section>
@@ -1095,79 +1195,79 @@
         </div>
     </div>
 
-    <!-- Footer -->
- <!-- Enhanced Modern Footer -->
-<footer class="footer-section pt-5 pb-4 mt-5">
-    <div class="container">
-        <div class="row g-4 mb-4">
-            
-            <!-- Column 1: Brand & Bio -->
-            <div class="col-lg-4 col-md-6">
-                <a class="navbar-brand fw-bold text-white fs-4 d-inline-block mb-3" href="#">
-                    <i class="fa-solid fa-terminal text-info me-2"></i>Nishara.dev
-                </a>
-                <p class="text-secondary small mb-3" style="line-height: 1.7;">
-                    Final Year HNDIT Student & Trainee Software Engineer passionate about building modern, scalable web applications and technical solutions.
-                </p>
-                <div class="d-flex gap-2">
-                    <a href="https://linkedin.com/in/nishara-de-silva" target="_blank" class="social-icon-btn" title="LinkedIn">
-                        <i class="fa-brands fa-linkedin-in"></i>
+    <!-- Enhanced Modern Footer -->
+    <footer class="footer-section pt-5 pb-4 mt-5">
+        <div class="container">
+            <div class="row g-4 mb-4">
+                
+                <!-- Column 1: Brand & Bio -->
+                <div class="col-lg-4 col-md-6">
+                    <a class="navbar-brand fw-bold text-white fs-4 d-inline-block mb-3" href="#">
+                        <i class="fa-solid fa-terminal text-info me-2"></i>Nishara.dev
                     </a>
-                    <a href="https://github.com/Tharu2003" target="_blank" class="social-icon-btn" title="GitHub">
-                        <i class="fa-brands fa-github"></i>
-                    </a>
-                    <a href="mailto:tharushinishara2003@gmail.com" class="social-icon-btn" title="Email">
-                        <i class="fa-solid fa-envelope"></i>
-                    </a>
-                </div>
-            </div>
-
-            <!-- Column 2: Quick Links -->
-            <div class="col-lg-4 col-md-6 ps-lg-5">
-                <h6 class="text-white fw-bold mb-3"><i class="fa-solid fa-link text-info me-2"></i>Quick Links</h6>
-                <ul class="list-unstyled mb-0 d-flex flex-column gap-2 small">
-                    <li><a href="#about" class="footer-link"><i class="fa-solid fa-chevron-right text-info me-2 small"></i>About Me</a></li>
-                    <li><a href="#journey" class="footer-link"><i class="fa-solid fa-chevron-right text-info me-2 small"></i>Education & Journey</a></li>
-                    <li><a href="#skills" class="footer-link"><i class="fa-solid fa-chevron-right text-info me-2 small"></i>Tech Stack</a></li>
-                    <li><a href="#projects" class="footer-link"><i class="fa-solid fa-chevron-right text-info me-2 small"></i>Featured Projects</a></li>
-                    <li><a href="#contact" class="footer-link"><i class="fa-solid fa-chevron-right text-info me-2 small"></i>Contact</a></li>
-                </ul>
-            </div>
-
-            <!-- Column 3: Contact Info & Back to top -->
-            <div class="col-lg-4 col-md-12 d-flex flex-column justify-content-between">
-                <div>
-                    <h6 class="text-white fw-bold mb-3"><i class="fa-solid fa-location-dot text-info me-2"></i>Location</h6>
-                    <p class="text-secondary small mb-2"><i class="fa-solid fa-map-pin me-2 text-info"></i>Galle, Sri Lanka</p>
-                    <p class="text-secondary small mb-0"><i class="fa-solid fa-envelope me-2 text-info"></i>tharushinishara2003@gmail.com</p>
+                    <p class="text-secondary small mb-3" style="line-height: 1.7;">
+                        Final Year HNDIT Student & Trainee Software Engineer passionate about building modern, scalable web applications and technical solutions.
+                    </p>
+                    <div class="d-flex gap-2">
+                        <a href="https://linkedin.com/in/nishara-de-silva" target="_blank" class="social-icon-btn" title="LinkedIn">
+                            <i class="fa-brands fa-linkedin-in"></i>
+                        </a>
+                        <a href="https://github.com/Tharu2003" target="_blank" class="social-icon-btn" title="GitHub">
+                            <i class="fa-brands fa-github"></i>
+                        </a>
+                        <a href="mailto:tharushinishara2003@gmail.com" class="social-icon-btn" title="Email">
+                            <i class="fa-solid fa-envelope"></i>
+                        </a>
+                    </div>
                 </div>
 
-                <div class="mt-4 mt-lg-0 text-lg-end">
-                    <a href="#" class="back-to-top-btn" title="Back to top">
-                        <i class="fa-solid fa-arrow-up"></i>
-                    </a>
+                <!-- Column 2: Quick Links -->
+                <div class="col-lg-4 col-md-6 ps-lg-5">
+                    <h6 class="text-white fw-bold mb-3"><i class="fa-solid fa-link text-info me-2"></i>Quick Links</h6>
+                    <ul class="list-unstyled mb-0 d-flex flex-column gap-2 small">
+                        <li><a href="#about" class="footer-link"><i class="fa-solid fa-chevron-right text-info me-2 small"></i>About Me</a></li>
+                        <li><a href="#journey" class="footer-link"><i class="fa-solid fa-chevron-right text-info me-2 small"></i>Education & Journey</a></li>
+                        <li><a href="#skills" class="footer-link"><i class="fa-solid fa-chevron-right text-info me-2 small"></i>Tech Stack</a></li>
+                        <li><a href="#projects" class="footer-link"><i class="fa-solid fa-chevron-right text-info me-2 small"></i>Featured Projects</a></li>
+                        <li><a href="#contact" class="footer-link"><i class="fa-solid fa-chevron-right text-info me-2 small"></i>Contact</a></li>
+                    </ul>
                 </div>
+
+                <!-- Column 3: Contact Info & Back to top -->
+                <div class="col-lg-4 col-md-12 d-flex flex-column justify-content-between">
+                    <div>
+                        <h6 class="text-white fw-bold mb-3"><i class="fa-solid fa-location-dot text-info me-2"></i>Location</h6>
+                        <p class="text-secondary small mb-2"><i class="fa-solid fa-map-pin me-2 text-info"></i>Galle, Sri Lanka</p>
+                        <p class="text-secondary small mb-0"><i class="fa-solid fa-envelope me-2 text-info"></i>tharushinishara2003@gmail.com</p>
+                    </div>
+
+                    <div class="mt-4 mt-lg-0 text-lg-end">
+                        <a href="#" class="back-to-top-btn" title="Back to top">
+                            <i class="fa-solid fa-arrow-up"></i>
+                        </a>
+                    </div>
+                </div>
+
             </div>
 
+            <hr class="border-secondary opacity-25 my-4">
+
+            <!-- Bottom Copyright -->
+            <div class="row align-items-center">
+                <div class="col-md-6 text-center text-md-start mb-2 mb-md-0">
+                    <p class="mb-0 small text-secondary">
+                        &copy; 2026 <span class="text-white fw-semibold">Nishara De Silva</span>. All rights reserved.
+                    </p>
+                </div>
+                <div class="col-md-6 text-center text-md-end">
+                    <p class="mb-0 small text-secondary">
+                        Designed & Built with <i class="fa-solid fa-heart text-danger mx-1"></i>
+                    </p>
+                </div>
+            </div>
         </div>
+    </footer>
 
-        <hr class="border-secondary opacity-25 my-4">
-
-        <!-- Bottom Copyright -->
-        <div class="row align-items-center">
-            <div class="col-md-6 text-center text-md-start mb-2 mb-md-0">
-                <p class="mb-0 small text-secondary">
-                    &copy; 2026 <span class="text-white fw-semibold">Nishara De Silva</span>. All rights reserved.
-                </p>
-            </div>
-            <div class="col-md-6 text-center text-md-end">
-                <p class="mb-0 small text-secondary">
-                    Designed & Built with <i class="fa-solid fa-heart text-danger mx-1"></i>
-                </p>
-            </div>
-        </div>
-    </div>
-</footer>
     <!-- JS Libraries -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
