@@ -1,0 +1,1306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nishara De Silva | Portfolio</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- AOS Animation Library -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700;800&family=Fira+Code:wght@400;600&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            /* PROFILE PHOTO ADJUSTMENT CONTROLS */
+            --profile-size: 220px;       
+            --img-scale: 1.1;             
+            --img-position: center top;  
+
+            /* Color Palette */
+            --bg-color: #030712;
+            --card-bg: rgba(15, 23, 42, 0.70);
+            --accent-cyan: #38bdf8;
+            --accent-purple: #c084fc;
+            --accent-glow: rgba(56, 189, 248, 0.4);
+            --accent-gold: #fbbf24;
+            --gold-glow: rgba(251, 191, 36, 0.4);
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+        }
+
+        html { scroll-behavior: smooth; }
+
+        body { 
+            font-family: 'Plus Jakarta Sans', sans-serif; 
+            background-color: var(--bg-color); 
+            color: var(--text-main);
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Mouse Glow Follower */
+        .cursor-glow {
+            width: 350px;
+            height: 350px;
+            background: radial-gradient(circle, rgba(56, 189, 248, 0.15) 0%, rgba(192, 132, 252, 0.05) 50%, transparent 70%);
+            position: fixed;
+            top: 0; left: 0;
+            border-radius: 50%;
+            pointer-events: none;
+            transform: translate(-50%, -50%);
+            z-index: 9999;
+        }
+
+        /* Canvas Background */
+        #particle-canvas {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        /* Glassmorphism Navbar */
+        .custom-nav {
+            background: rgba(3, 7, 18, 0.8) !important;
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            transition: all 0.3s ease;
+        }
+        .nav-link {
+            color: var(--text-muted) !important;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+        .nav-link:hover, .nav-link.active {
+            color: var(--accent-cyan) !important;
+            transform: translateY(-2px);
+        }
+
+        /* PROFILE IMAGE BOX */
+        .profile-wrapper {
+            position: relative;
+            width: var(--profile-size);
+            height: var(--profile-size);
+            margin: 0 auto 30px;
+        }
+        .profile-box {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            overflow: hidden;
+            position: relative;
+            z-index: 2;
+            border: 3px solid rgba(56, 189, 248, 0.6);
+            box-shadow: 0 0 35px rgba(56, 189, 248, 0.4);
+            background: #0f172a;
+        }
+        .profile-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: var(--img-position);
+            transform: scale(var(--img-scale));
+            transition: transform 0.5s ease;
+        }
+        .profile-wrapper:hover .profile-box img {
+            transform: scale(calc(var(--img-scale) + 0.12));
+        }
+        .profile-pulse {
+            position: absolute;
+            top: -12px; left: -12px; right: -12px; bottom: -12px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, var(--accent-cyan), var(--accent-purple));
+            z-index: 1;
+            filter: blur(18px);
+            opacity: 0.7;
+            animation: pulseGlow 4s ease-in-out infinite alternate;
+        }
+
+        @keyframes pulseGlow {
+            0% { transform: scale(0.95); opacity: 0.5; filter: blur(15px); }
+            100% { transform: scale(1.08); opacity: 0.9; filter: blur(25px); }
+        }
+
+        /* Hero Section */
+        .hero-section { padding: 130px 0 90px; }
+        .hero-title {
+            font-size: 3.8rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #ffffff 30%, var(--accent-cyan) 70%, var(--accent-purple) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -1px;
+        }
+
+        /* Floating Animation */
+        .img-float {
+            animation: floatingImg 6s ease-in-out infinite;
+        }
+        @keyframes floatingImg {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+
+        /* Glass Cards */
+        .glass-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 24px;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .glass-card:hover { 
+            border-color: rgba(56, 189, 248, 0.5);
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5), 0 0 25px rgba(56, 189, 248, 0.2);
+        }
+
+        /* Counter Section Styling */
+        .counter-number {
+            font-size: 3rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-family: 'Fira Code', monospace;
+        }
+
+        /* Timeline Styling */
+        .timeline {
+            position: relative;
+            border-left: 2px solid rgba(56, 189, 248, 0.3);
+            margin-left: 15px;
+            padding-left: 25px;
+        }
+        .timeline-item {
+            position: relative;
+            margin-bottom: 35px;
+        }
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -32px;
+            top: 5px;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--accent-cyan);
+            box-shadow: 0 0 10px var(--accent-cyan);
+        }
+
+        /* HIGHLIGHTED AWARD CARDS STYLING */
+        .award-card {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.04), rgba(251, 191, 36, 0.03));
+            border: 1px solid rgba(251, 191, 36, 0.25);
+            border-radius: 18px;
+            padding: 18px;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+        }
+        .award-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%;
+            width: 60%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(251, 191, 36, 0.15), transparent);
+            transition: 0.6s;
+        }
+        .award-card:hover::before {
+            left: 120%;
+        }
+        .award-card:hover {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.08), rgba(251, 191, 36, 0.08));
+            border-color: rgba(251, 191, 36, 0.6);
+            transform: translateY(-4px) scale(1.01);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4), 0 0 20px rgba(251, 191, 36, 0.25);
+        }
+        .award-thumb {
+            width: 80px;
+            height: 80px;
+            border-radius: 14px;
+            object-fit: cover;
+            border: 2px solid rgba(251, 191, 36, 0.6);
+            box-shadow: 0 0 15px rgba(251, 191, 36, 0.3);
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+        .award-thumb:hover {
+            transform: scale(1.1) rotate(2deg);
+        }
+
+        /* Input & Form Styling */
+        .form-control-custom {
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            color: #fff;
+            border-radius: 12px;
+            padding: 14px 18px;
+            transition: all 0.3s ease;
+        }
+        .form-control-custom:focus {
+            background: rgba(15, 23, 42, 0.9);
+            border-color: var(--accent-cyan);
+            color: #fff;
+            box-shadow: 0 0 20px rgba(56, 189, 248, 0.3);
+            outline: none;
+        }
+
+        /* Contact Info Cards */
+        .contact-info-card {
+            background: rgba(15, 23, 42, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 16px;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: inherit;
+        }
+        .contact-info-card:hover {
+            border-color: var(--accent-cyan);
+            transform: translateX(6px);
+            background: rgba(56, 189, 248, 0.08);
+            color: inherit;
+        }
+        .contact-icon-box {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            background: rgba(56, 189, 248, 0.1);
+            border: 1px solid rgba(56, 189, 248, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+            color: var(--accent-cyan);
+            flex-shrink: 0;
+        }
+
+        /* Project Image Box */
+        .project-img-wrapper {
+            position: relative;
+            height: 220px;
+            overflow: hidden;
+        }
+        .project-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+        .glass-card:hover .project-img {
+            transform: scale(1.1);
+        }
+
+        /* Badges */
+        .badge-tech { 
+            background: rgba(56, 189, 248, 0.08); 
+            color: var(--accent-cyan); 
+            border: 1px solid rgba(56, 189, 248, 0.25);
+            font-weight: 500;
+            padding: 6px 14px;
+            border-radius: 30px;
+            margin: 3px;
+            display: inline-block;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.82rem;
+        }
+        .badge-award {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            color: white;
+            font-weight: 700;
+            border-radius: 30px;
+            padding: 6px 16px;
+            box-shadow: 0 0 15px rgba(245, 158, 11, 0.4);
+        }
+
+        /* Glowing Buttons */
+        .btn-glow {
+            background: linear-gradient(135deg, #38bdf8 0%, #3b82f6 100%);
+            color: white;
+            border: none;
+            font-weight: 700;
+            padding: 14px 36px;
+            border-radius: 30px;
+            box-shadow: 0 0 25px rgba(56, 189, 248, 0.4);
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+        .btn-glow:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 0 35px rgba(56, 189, 248, 0.8);
+            color: white;
+        }
+
+        .btn-outline-glow {
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            color: var(--text-main);
+            font-weight: 700;
+            padding: 12px 32px;
+            border-radius: 30px;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+        .btn-outline-glow:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--accent-cyan);
+            border-color: var(--accent-cyan);
+            box-shadow: 0 0 20px rgba(56, 189, 248, 0.3);
+        }
+
+        /* Section Titles */
+        .section-title {
+            position: relative;
+            display: inline-block;
+            font-weight: 800;
+            margin-bottom: 60px;
+        }
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -14px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(90deg, var(--accent-cyan), var(--accent-purple));
+            border-radius: 4px;
+            box-shadow: 0 0 10px var(--accent-cyan);
+        }
+
+        /* MODERN ELEGANT GLASS MODAL */
+        .modal-content-glass {
+            background: rgba(10, 16, 30, 0.94);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border: 1px solid rgba(56, 189, 248, 0.3);
+            border-radius: 24px;
+            color: #fff;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8), 0 0 40px rgba(56, 189, 248, 0.2);
+            overflow: hidden;
+        }
+        .modal-header {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            background: rgba(255, 255, 255, 0.02);
+            padding: 20px 28px;
+        }
+        .modal-body-custom {
+            padding: 28px;
+        }
+
+        .modal-img-card {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 18px;
+            padding: 12px;
+            transition: all 0.3s ease;
+        }
+        .modal-img-card:hover {
+            border-color: rgba(56, 189, 248, 0.5);
+            box-shadow: 0 0 25px rgba(56, 189, 248, 0.2);
+        }
+        .modal-preview-img {
+            max-height: 420px;
+            width: 100%;
+            object-fit: contain;
+            border-radius: 12px;
+        }
+
+        .modal-desc-box {
+            background: rgba(15, 23, 42, 0.8);
+            border: 1px solid rgba(56, 189, 248, 0.25);
+            border-left: 4px solid var(--accent-cyan);
+            border-radius: 16px;
+            padding: 20px;
+            position: relative;
+            box-shadow: inset 0 0 20px rgba(56, 189, 248, 0.05);
+            animation: fadeInSlideUp 0.5s ease-out;
+        }
+        /* Footer Modern Styling */
+.footer-section {
+    background: rgba(3, 7, 18, 0.95);
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    position: relative;
+    z-index: 10;
+}
+
+.footer-link {
+    color: var(--text-muted);
+    text-decoration: none;
+    transition: all 0.3s ease;
+    display: inline-block;
+}
+
+.footer-link:hover {
+    color: var(--accent-cyan);
+    transform: translateX(4px);
+}
+
+.social-icon-btn {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: var(--text-main);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    text-decoration: none;
+}
+
+.social-icon-btn:hover {
+    background: var(--accent-cyan);
+    color: #030712;
+    box-shadow: 0 0 15px var(--accent-glow);
+    transform: translateY(-3px);
+}
+
+.back-to-top-btn {
+    width: 42px;
+    height: 42px;
+    border-radius: 12px;
+    background: rgba(56, 189, 248, 0.1);
+    border: 1px solid rgba(56, 189, 248, 0.3);
+    color: var(--accent-cyan);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    text-decoration: none;
+}
+
+.back-to-top-btn:hover {
+    background: var(--accent-cyan);
+    color: #030712;
+    box-shadow: 0 0 20px var(--accent-glow);
+    transform: translateY(-3px);
+}
+        
+        @keyframes fadeInSlideUp {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body data-bs-spy="scroll" data-bs-target="#navbar">
+
+    <!-- Mouse Glow Follower -->
+    <div class="cursor-glow" id="cursor-glow"></div>
+
+    <!-- Animated Particle Canvas -->
+    <canvas id="particle-canvas"></canvas>
+
+    <!-- Navigation Bar -->
+    <nav id="navbar" class="navbar navbar-expand-lg custom-nav sticky-top">
+        <div class="container">
+            <a class="navbar-brand fw-bold text-white fs-4" href="#"><i class="fa-solid fa-terminal text-info me-2"></i>Nishara.dev</a>
+            <button class="navbar-toggler border-0 text-white" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <i class="fa-solid fa-bars fs-3"></i>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link px-3" href="#about">About</a></li>
+                    <li class="nav-item"><a class="nav-link px-3" href="#journey">Journey</a></li>
+                    <li class="nav-item"><a class="nav-link px-3" href="#skills">Skills</a></li>
+                    <li class="nav-item"><a class="nav-link px-3" href="#projects">Projects</a></li>
+                    <li class="nav-item"><a class="nav-link px-3" href="#contact">Contact</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section text-center">
+        <div class="container" data-aos="zoom-in" data-aos-duration="1000">
+            
+            <!-- Photo Box -->
+            <div class="profile-wrapper">
+                <div class="profile-pulse"></div>
+                <div class="profile-box">
+                    <img src="images/1.jpeg" alt="Nishara De Silva" onerror="this.src='https://via.placeholder.com/300/1e293b/38bdf8?text=Nishara'">
+                </div>
+            </div>
+
+            <h1 class="hero-title mb-3">Nishara De Silva</h1>
+            <p class="fs-3 text-light mb-2">I am a <span id="typed-text" class="text-info fw-bold"></span></p>
+            <p class="fs-5 text-secondary mt-2"><i class="fa-solid fa-graduation-cap text-info me-2"></i>Final Year HNDIT Student at SLIATE (ATI Labuduwa)</p>
+            
+            <div class="d-flex justify-content-center gap-3 flex-wrap mt-4">
+                <a href="#projects" class="btn btn-glow"><i class="fa-solid fa-rocket me-2"></i>View Projects</a>
+                <a href="#contact" class="btn btn-outline-glow"><i class="fa-solid fa-paper-plane me-2"></i>Contact Me</a>
+                <a href="CV- Nishara new1.pdf" download class="btn btn-outline-glow"><i class="fa-solid fa-file-arrow-down me-2"></i>Download CV</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-5">
+        <div class="container text-center">
+            <h2 class="section-title text-white" data-aos="fade-up">About Me</h2>
+            <div class="row justify-content-center">
+                <div class="col-lg-9" data-aos="fade-up" data-aos-delay="100">
+                    <div class="glass-card p-4 p-md-5 text-start" data-tilt>
+                        <p class="lead text-light mb-0" style="line-height: 1.9;">
+                            A driven and detail-oriented Final Year HNDIT student at SLIATE with a strong foundation in full-stack web development and core software engineering concepts. Proficient in <b>PHP, MySQL, JavaScript, and Bootstrap</b>, with practical experience in building database-driven web applications and documentation lead roles. Eager to contribute to impactful real-world software solutions in a Trainee Software Engineer / Intern role.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ANIMATED STATS COUNTER SECTION -->
+    <section class="py-4">
+        <div class="container">
+            <div class="row g-4 text-center justify-content-center">
+                <div class="col-6 col-md-3" data-aos="zoom-in" data-aos-delay="100">
+                    <div class="glass-card p-4">
+                        <i class="fa-solid fa-laptop-code fa-2x text-info mb-2"></i>
+                        <div class="counter-number" data-target="5">0</div>
+                        <p class="small text-secondary mt-1 mb-0">Full-Stack Projects</p>
+                    </div>
+                </div>
+                <div class="col-6 col-md-3" data-aos="zoom-in" data-aos-delay="200">
+                    <div class="glass-card p-4">
+                        <i class="fa-solid fa-trophy fa-2x text-warning mb-2"></i>
+                        <div class="counter-number" data-target="2">0</div>
+                        <p class="small text-secondary mt-1 mb-0">Innovation Awards</p>
+                    </div>
+                </div>
+                <div class="col-6 col-md-3" data-aos="zoom-in" data-aos-delay="300">
+                    <div class="glass-card p-4">
+                        <i class="fa-solid fa-layer-group fa-2x text-success mb-2"></i>
+                        <div class="counter-number" data-target="10">0</div>
+                        <p class="small text-secondary mt-1 mb-0">Tech Stack Tools</p>
+                    </div>
+                </div>
+                <div class="col-6 col-md-3" data-aos="zoom-in" data-aos-delay="400">
+                    <div class="glass-card p-4">
+                        <i class="fa-solid fa-graduation-cap fa-2x text-purple mb-2" style="color: var(--accent-purple);"></i>
+                        <div class="counter-number" data-target="2">0</div>
+                        <p class="small text-secondary mt-1 mb-0">IT Diplomas (NVQ4 & HNDIT)</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Education & Journey Section -->
+    <section id="journey" class="py-5">
+        <div class="container">
+            <h2 class="section-title text-white text-center d-block" data-aos="fade-up">Education & Achievements Journey</h2>
+            
+            <div class="row g-4">
+                <!-- Education Timeline Column -->
+                <div class="col-lg-6" data-aos="fade-right" data-aos-delay="100">
+                    <div class="glass-card p-4 h-100">
+                        <h4 class="fw-bold text-info mb-4"><i class="fa-solid fa-graduation-cap me-2"></i>Academic Background</h4>
+                        <div class="timeline">
+                            <div class="timeline-item">
+                                <span class="badge bg-info text-dark mb-2">2024 - 2026 (Present)</span>
+                                <h5 class="fw-bold text-white mb-1">Higher National Diploma in IT (HNDIT)</h5>
+                                <p class="small text-secondary mt-1">SLIATE - Advanced Technological Institute (ATI Labuduwa)</p>
+                                <p class="small text-secondary mt-1 mb-0">Focusing on Full-Stack Web App Engineering, System Analysis, Database Design & DSA.</p>
+                            </div>
+                            <div class="timeline-item">
+                                <span class="badge bg-secondary mb-2">2024</span>
+                                <h5 class="fw-bold text-white mb-1">NVQ Level 4 Diploma in Software Development</h5>
+                                <p class="small text-secondary mt-1">College of Technology - Galle</p>
+                                <p class="small text-secondary mt-1 mb-0">Completed National Vocational Qualification in Software Engineering fundamentals.</p>
+                            </div>
+                            <div class="timeline-item">
+                                <span class="badge bg-secondary mb-2">2022</span>
+                                <h5 class="fw-bold text-white mb-1">G.C.E. Advanced Level</h5>
+                                <p class="small text-secondary mt-1">Sanghamitta College, Galle</p>
+                                <p class="small text-secondary mt-1 mb-0">Physical Science Stream: Combined Mathematics (C), Physics (S), Chemistry (S).</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Achievements & Certifications Column -->
+                <div class="col-lg-6" data-aos="fade-left" data-aos-delay="200">
+                    <div class="glass-card p-4 h-100">
+                        <h4 class="fw-bold text-warning mb-4"><i class="fa-solid fa-award me-2"></i>Honors & Achievements</h4>
+                        
+                        <!-- Award 1: Official Appreciation Letter -->
+                        <div class="award-card mb-3">
+                            <div class="d-flex align-items-center gap-3">
+                                <img src="images/page1.png" alt="MediQ Letter" class="award-thumb" onerror="this.src='https://via.placeholder.com/150/1e293b/38bdf8?text=MediQ+Letter'" onclick="openImageModal('images/page1.png', 'images/page2.png', 'Official Letter of Appreciation', 'Recognized by Prof. C. Lakmal Fonseka for project participation in Healthcare Information Systems (MediQ) at Karapitiya National Hospital.', 'letter.pdf')">
+                                
+                                <div class="flex-grow-1">
+                                    <div class="d-flex align-items-center gap-2 mb-1">
+                                        <i class="fa-solid fa-certificate text-info"></i>
+                                        <h6 class="fw-bold text-white mb-0">Official Letter of Appreciation</h6>
+                                    </div>
+                                    <p class="small text-secondary mt-1 mb-1">Healthcare Information Systems (MediQ) - Univ. of Ruhuna & Karapitiya Hospital</p>
+                                    
+                                    <button class="btn btn-sm btn-link text-info p-0 text-decoration-none small fw-bold" onclick="openImageModal('images/page1.png', 'images/page2.png', 'Official Letter of Appreciation', 'Recognized by Prof. C. Lakmal Fonseka for project participation in Healthcare Information Systems (MediQ) at Karapitiya National Hospital.', 'letter.pdf')">
+                                        <i class="fa-solid fa-expand me-1"></i> View Document Details
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Award 2: 2nd Place Innovation Competition -->
+                        <div class="award-card mb-3">
+                            <div class="d-flex align-items-center gap-3">
+                                <img src="images/3.jpeg" alt="QR Award" class="award-thumb" onerror="this.src='https://via.placeholder.com/150/1e293b/f59e0b?text=QR+Award'" onclick="openImageModal('images/3.jpeg', '', '2nd Place - HNDIT Innovation Competition', 'Awarded 2nd place in the 2nd Year Academic Competition at ATI Labuduwa for developing an innovative QR-based Attendance, Fee Payment & LMS System.')">
+                                <div class="flex-grow-1">
+                                    <div class="d-flex align-items-center gap-2 mb-1">
+                                        <i class="fa-solid fa-trophy text-warning me-1"></i>
+                                        <h6 class="fw-bold text-warning mb-0">2nd Place - HNDIT Innovation</h6>
+                                    </div>
+                                    <p class="small text-secondary mt-1 mb-1">ATI Labuduwa (2nd Year Academic Competition)</p>
+                                    <button class="btn btn-sm btn-link text-warning p-0 text-decoration-none small fw-bold" onclick="openImageModal('images/3.jpeg', '', '2nd Place - HNDIT Innovation Competition', 'Awarded 2nd place in the 2nd Year Academic Competition at ATI Labuduwa for developing an innovative QR-based Attendance, Fee Payment & LMS System.')">
+                                        <i class="fa-solid fa-expand me-1"></i> View Certificate / Photo
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Award 3: 2nd Place Pulsar Society -->
+                        <div class="award-card">
+                            <div class="d-flex align-items-center gap-3">
+                                <img src="images/2.jpg" alt="Hotel System Award" class="award-thumb" onerror="this.src='https://via.placeholder.com/150/1e293b/f59e0b?text=Pulsar+Award'" onclick="openImageModal('images/2.jpg', '', '2nd Place - Pulsar Society Competition', 'Secured 2nd place during 1st Year studies at ATI Labuduwa for building a Full-Stack Web-Based Hotel Management & Booking System.')">
+                                <div class="flex-grow-1">
+                                    <div class="d-flex align-items-center gap-2 mb-1">
+                                        <i class="fa-solid fa-medal text-warning me-1"></i>
+                                        <h6 class="fw-bold text-warning mb-0">2nd Place - Pulsar Society</h6>
+                                    </div>
+                                    <p class="small text-secondary mt-1 mb-1">ATI Labuduwa (1st Year Academic Competition)</p>
+                                    <button class="btn btn-sm btn-link text-warning p-0 text-decoration-none small fw-bold" onclick="openImageModal('images/2.jpg', '', '2nd Place - Pulsar Society Competition', 'Secured 2nd place during 1st Year studies at ATI Labuduwa for building a Full-Stack Web-Based Hotel Management & Booking System.')">
+                                        <i class="fa-solid fa-expand me-1"></i> View Certificate / Photo
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tech Stack Section -->
+    <section id="skills" class="py-5">
+        <div class="container text-center">
+            <h2 class="section-title text-white" data-aos="fade-up">Tech Stack & Tools</h2>
+            <div class="row g-4">
+                
+                <div class="col-md-3 col-6" data-aos="fade-up" data-aos-delay="100">
+                    <div class="glass-card p-4 h-100" data-tilt>
+                        <i class="fa-solid fa-code fa-3x text-info mb-3 img-float"></i>
+                        <h5 class="fw-bold text-white mb-3">Languages</h5>
+                        <div>
+                            <span class="badge badge-tech">PHP (Proficient)</span>
+                            <span class="badge badge-tech">JavaScript</span>
+                            <span class="badge badge-tech">HTML5 / CSS3</span>
+                            <span class="badge badge-tech">Java</span>
+                            <span class="badge badge-tech">C#</span>
+                            <span class="badge badge-tech">Python</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-3 col-6" data-aos="fade-up" data-aos-delay="200">
+                    <div class="glass-card p-4 h-100" data-tilt>
+                        <i class="fa-solid fa-layer-group fa-3x text-success mb-3 img-float"></i>
+                        <h5 class="fw-bold text-white mb-3">Frameworks</h5>
+                        <div>
+                            <span class="badge badge-tech">Bootstrap</span>
+                            <span class="badge badge-tech">Laravel (Basic)</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-3 col-6" data-aos="fade-up" data-aos-delay="300">
+                    <div class="glass-card p-4 h-100" data-tilt>
+                        <i class="fa-solid fa-database fa-3x text-warning mb-3 img-float"></i>
+                        <h5 class="fw-bold text-white mb-3">Databases</h5>
+                        <div>
+                            <span class="badge badge-tech">MySQL</span>
+                            <span class="badge badge-tech">Relational DB Design</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-3 col-6" data-aos="fade-up" data-aos-delay="400">
+                    <div class="glass-card p-4 h-100" data-tilt>
+                        <i class="fa-solid fa-screwdriver-wrench fa-3x text-danger mb-3 img-float"></i>
+                        <h5 class="fw-bold text-white mb-3">Tools & Concepts</h5>
+                        <div>
+                            <span class="badge badge-tech">Git & GitHub</span>
+                            <span class="badge badge-tech">Figma</span>
+                            <span class="badge badge-tech">VS Code</span>
+                            <span class="badge badge-tech">XAMPP</span>
+                            <span class="badge badge-tech">OOP</span>
+                            <span class="badge badge-tech">DSA</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section id="projects" class="py-5">
+        <div class="container text-center">
+            <h2 class="section-title text-white" data-aos="fade-up">Featured Projects</h2>
+            <div class="row g-4 text-start">
+
+                <!-- MediQ Project Version 2 Card -->
+                <div class="col-md-6" data-aos="fade-up" data-aos-delay="100">
+                    <div class="glass-card h-100 d-flex flex-column" data-tilt data-tilt-max="10">
+                        <div class="project-img-wrapper">
+                            <img src="images/8.png" alt="MediQ Systems" class="project-img" onerror="this.src='https://via.placeholder.com/600x300/1e293b/38bdf8?text=MediQ+Healthcare+System'">
+                        </div>
+                        <div class="p-4 d-flex flex-column flex-grow-1">
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <h4 class="fw-bold text-white mb-0">MediQ v2.0 - Antibiotics Usage Analysis</h4>
+                                <span class="badge bg-success text-dark"><i class="fa-solid fa-globe me-1"></i>Live</span>
+                            </div>
+                            
+                            <!-- Tech Lead Role Badge -->
+                            <span class="badge bg-info text-dark align-self-start mb-3 fw-bold">
+                                <i class="fa-solid fa-user-gear me-1"></i>Documentation & Tech Lead
+                            </span>
+
+                            <p class="small text-secondary mt-1 flex-grow-1">
+                                Led technical architecture & comprehensive SRS documentation for a real-time antibiotic management system at National Hospital Karapitiya. Built features for stock management, ward-wise release & return tracking, interactive usage analytics graphs, and PDF/Excel report generation.
+                            </p>
+
+                            <div class="mb-3">
+                                <span class="badge badge-tech">PHP</span>
+                                <span class="badge badge-tech">MySQL</span>
+                                <span class="badge badge-tech">JavaScript</span>
+                                <span class="badge badge-tech">Bootstrap</span>
+                                <span class="badge badge-tech">Technical Leadership</span>
+                                <span class="badge badge-tech">SRS & Analytics</span>
+                            </div>
+
+                            <div class="d-flex gap-2 mt-auto flex-wrap">
+                                <a href="https://lnkd.in/gZfeCC-e" target="_blank" class="btn btn-glow btn-sm">
+                                    <i class="fa-solid fa-arrow-up-right-from-square me-1"></i> Live Demo
+                                </a>
+                                <button class="btn btn-outline-glow btn-sm" onclick="openImageModal('images/page1.png', 'images/page2.png', 'Official Letter of Appreciation', 'Recognized by Prof. C. Lakmal Fonseka for project participation and technical support in Healthcare Information Systems (MediQ) at Karapitiya National Hospital.', 'letter.pdf')">
+                                    <i class="fa-solid fa-certificate me-1"></i> Appreciation Letter
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- QR Attendance Project -->
+                <div class="col-md-6" data-aos="fade-up" data-aos-delay="200">
+                    <div class="glass-card h-100 d-flex flex-column" data-tilt data-tilt-max="10">
+                        <div class="project-img-wrapper">
+                            <img src="images/7.png" alt="QR LMS Project" class="project-img" onerror="this.src='https://via.placeholder.com/600x300/1e293b/38bdf8?text=QR+Attendance+%26+LMS'">
+                        </div>
+                        <div class="p-4 d-flex flex-column flex-grow-1">
+                            <h4 class="fw-bold text-white mb-2">QR-Based Attendance & LMS System</h4>
+                            <span class="badge badge-award align-self-start mb-3"><i class="fa-solid fa-trophy me-1"></i>2nd Place Winner - HNDIT Innovation</span>
+                            <p class="small text-secondary mt-1 flex-grow-1">Web app with QR attendance tracking, course fee payments, and LMS access. Designed relational MySQL models & role-based dashboards.</p>
+                            <div class="mb-3">
+                                <span class="badge badge-tech">PHP</span>
+                                <span class="badge badge-tech">MySQL</span>
+                                <span class="badge badge-tech">JS</span>
+                                <span class="badge badge-tech">Bootstrap</span>
+                            </div>
+                            <a href="https://github.com/Tharu003/QR_based_Attendance_Payment_Management_System" target="_blank" class="btn btn-outline-glow btn-sm align-self-start mt-auto"><i class="fa-brands fa-github me-1"></i> View Code</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Hotel Management Project -->
+                <div class="col-md-6" data-aos="fade-up" data-aos-delay="300">
+                    <div class="glass-card h-100 d-flex flex-column" data-tilt data-tilt-max="10">
+                        <div class="project-img-wrapper">
+                            <img src="images/10.png" alt="Hotel Management" class="project-img" onerror="this.src='https://via.placeholder.com/600x300/1e293b/38bdf8?text=Hotel+Management+System'">
+                        </div>
+                        <div class="p-4 d-flex flex-column flex-grow-1">
+                            <h4 class="fw-bold text-white mb-2">Hotel Booking & Management Website</h4>
+                            <span class="badge badge-award align-self-start mb-3"><i class="fa-solid fa-award me-1"></i>2nd Place Winner - Pulsar Society</span>
+                            
+                            <p class="small text-secondary mt-1 flex-grow-1">
+                                A responsive user-centric web interface for hotel showcase and reservations. Features dynamic user authentication (Login/Register), interactive facilities/about showcases, contact forms, and a seamless room booking system.
+                            </p>
+
+                            <div class="mb-3">
+                                <span class="badge badge-tech">PHP</span>
+                                <span class="badge badge-tech">MySQL</span>
+                                <span class="badge badge-tech">HTML5/CSS3</span>
+                                <span class="badge badge-tech">Bootstrap</span>
+                                <span class="badge badge-tech">UI Design</span>
+                            </div>
+                            
+                            <a href="https://github.com/Tharu003/hotel_mangement_system" target="_blank" class="btn btn-outline-glow btn-sm align-self-start mt-auto">
+                                <i class="fa-brands fa-github me-1"></i> View Code
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tuition Management Project -->
+                <div class="col-md-6" data-aos="fade-up" data-aos-delay="400">
+                    <div class="glass-card h-100 d-flex flex-column" data-tilt data-tilt-max="10">
+                        <div class="project-img-wrapper">
+                            <img src="images/9.png" alt="Tuition System" class="project-img" onerror="this.src='https://via.placeholder.com/600x300/1e293b/38bdf8?text=Tuition+Class+Management'">
+                        </div>
+                        <div class="p-4 d-flex flex-column flex-grow-1">
+                            <h4 class="fw-bold text-white mb-2">Tuition Class Management System</h4>
+                            <p class="small text-secondary mt-1 flex-grow-1">Collaborative web system for student enrollment, class schedules, and fee management tracking schema.</p>
+                            <div class="mb-3">
+                                <span class="badge badge-tech">PHP</span>
+                                <span class="badge badge-tech">MySQL</span>
+                                <span class="badge badge-tech">Bootstrap</span>
+                            </div>
+                            <a href="https://github.com/Tharu003/tuition-management-system" target="_blank" class="btn btn-outline-glow btn-sm align-self-start mt-auto"><i class="fa-brands fa-github me-1"></i> View Code</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- News Portal Project -->
+                <div class="col-md-6" data-aos="fade-up" data-aos-delay="500">
+                    <div class="glass-card h-100 d-flex flex-column" data-tilt data-tilt-max="10">
+                        <div class="project-img-wrapper">
+                            <img src="images/11.png" alt="News Portal Project" class="project-img" onerror="this.src='https://via.placeholder.com/600x300/1e293b/38bdf8?text=News+Portal'">
+                        </div>
+                        <div class="p-4 d-flex flex-column flex-grow-1">
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <h4 class="fw-bold text-white mb-0">Dynamic News Portal</h4>
+                                <span class="badge bg-success text-dark"><i class="fa-solid fa-globe me-1"></i>Live</span>
+                            </div>
+                            <p class="small text-secondary mt-1 flex-grow-1">
+                                A full-featured news website with an admin panel for publishing articles with images and videos, role-based access control for Admins and Editors, plus dedicated Gossip, About, and Contact sections for visitors.
+                            </p>
+                            <div class="mb-3">
+                                <span class="badge badge-tech">PHP</span>
+                                <span class="badge badge-tech">MySQL</span>
+                                <span class="badge badge-tech">JavaScript</span>
+                                <span class="badge badge-tech">Bootstrap</span>
+                                <span class="badge badge-tech">Role-Based Access Control</span>
+                            </div>
+                            <a href="http://freshnews-portal.gamer.free/myproject/public/" target="_blank" class="btn btn-glow btn-sm align-self-start mt-auto">
+                                <i class="fa-solid fa-arrow-up-right-from-square me-1"></i> Live Demo
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Redesigned High-End Contact Section -->
+    <section id="contact" class="py-5">
+        <div class="container" data-aos="zoom-in">
+            
+            <!-- Main Title & Header Subtitle Centered -->
+            <div class="text-center mb-5">
+                <h2 class="section-title text-white mb-3">Get In Touch</h2>
+                <div class="row justify-content-center">
+                    <div class="col-lg-8">
+                        <p class="fs-5 text-secondary">
+                            <i class="fa-solid fa-graduation-cap text-info me-2"></i>
+                            Have a project in mind, a question, or an internship opportunity? Let's connect!
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row g-4">
+                <!-- Left Side: Contact Information Cards -->
+                <div class="col-lg-5" data-aos="fade-right" data-aos-delay="100">
+                    <div class="d-flex flex-column gap-3">
+                        
+                        <a href="mailto:tharushinishara2003@gmail.com" class="contact-info-card">
+                            <div class="contact-icon-box">
+                                <i class="fa-solid fa-envelope"></i>
+                            </div>
+                            <div>
+                                <h6 class="text-white fw-bold mb-1">Email Me</h6>
+                                <p class="small text-secondary mt-1 mb-0">tharushinishara2003@gmail.com</p>
+                            </div>
+                        </a>
+
+                        <div class="contact-info-card">
+                            <div class="contact-icon-box">
+                                <i class="fa-solid fa-location-dot"></i>
+                            </div>
+                            <div>
+                                <h6 class="text-white fw-bold mb-1">Location</h6>
+                                <p class="small text-secondary mt-1 mb-0">Galle, Sri Lanka</p>
+                            </div>
+                        </div>
+
+                        <a href="https://linkedin.com/in/nishara-de-silva" target="_blank" class="contact-info-card">
+                            <div class="contact-icon-box">
+                                <i class="fa-brands fa-linkedin"></i>
+                            </div>
+                            <div>
+                                <h6 class="text-white fw-bold mb-1">LinkedIn</h6>
+                                <p class="small text-secondary mt-1 mb-0">Connect professionally</p>
+                            </div>
+                        </a>
+
+                        <a href="https://github.com/Tharu2003" target="_blank" class="contact-info-card">
+                            <div class="contact-icon-box">
+                                <i class="fa-brands fa-github"></i>
+                            </div>
+                            <div>
+                                <h6 class="text-white fw-bold mb-1">GitHub</h6>
+                                <p class="small text-secondary mt-1 mb-0">Check out my repositories</p>
+                            </div>
+                        </a>
+
+                    </div>
+                </div>
+
+                <!-- Right Side: Contact Form -->
+                <div class="col-lg-7" data-aos="fade-left" data-aos-delay="200">
+                    <div class="glass-card p-4 p-md-5">
+                        <h4 class="fw-bold text-white mb-4"><i class="fa-solid fa-paper-plane text-info me-2"></i>Send Me a Message</h4>
+
+                        <form action="https://formsubmit.co/tharushinishara2003@gmail.com" method="POST">
+                            <input type="hidden" name="_captcha" value="false">
+                            <input type="hidden" name="_template" value="table">
+                            <input type="hidden" name="_subject" value="New Portfolio Message from Nishara.dev">
+
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label class="form-label text-light fw-bold small">Your Name</label>
+                                    <input type="text" name="name" class="form-control form-control-custom" placeholder="John Doe" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label text-light fw-bold small">Your Email</label>
+                                    <input type="email" name="email" class="form-control form-control-custom" placeholder="john@example.com" required>
+                                </div>
+                                <div class="col-12">
+                                    <label class="form-label text-light fw-bold small">Subject</label>
+                                    <input type="text" name="subject" class="form-control form-control-custom" placeholder="Job Opportunity / Project Inquiry" required>
+                                </div>
+                                <div class="col-12">
+                                    <label class="form-label text-light fw-bold small">Message</label>
+                                    <textarea name="message" rows="4" class="form-control form-control-custom" placeholder="Hi Nishara, I'd like to discuss an opportunity with you..." required></textarea>
+                                </div>
+                                <div class="col-12 mt-4">
+                                    <button type="submit" class="btn btn-glow w-100 py-3">
+                                        <i class="fa-solid fa-paper-plane me-2"></i> Send Message
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Modal for Viewing Certificate/Award Image Details -->
+    <div class="modal fade" id="awardModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content modal-content-glass">
+                <div class="modal-header d-flex justify-content-between align-items-center">
+                    <h5 class="modal-title text-info fw-bold d-flex align-items-center gap-2" id="modalTitle">
+                        <i class="fa-solid fa-file-lines text-info"></i> <span>Document Details</span>
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body modal-body-custom">
+                    
+                    <!-- Images Gallery Section -->
+                    <div class="row g-3 justify-content-center mb-4">
+                        <div class="col-12 col-md-6" id="modalImg1Container">
+                            <div class="modal-img-card text-center">
+                                <img id="modalImage1" src="" alt="Document Page 1" class="modal-preview-img shadow" onerror="this.src='https://via.placeholder.com/400x500/1e293b/38bdf8?text=Image+1'">
+                                <small class="text-muted d-block mt-2"><i class="fa-regular fa-image me-1"></i> Preview / Page 1</small>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-6" id="modalImg2Container" style="display: none;">
+                            <div class="modal-img-card text-center">
+                                <img id="modalImage2" src="" alt="Document Page 2" class="modal-preview-img shadow" onerror="this.src='https://via.placeholder.com/400x500/1e293b/38bdf8?text=Image+2'">
+                                <small class="text-muted d-block mt-2"><i class="fa-regular fa-image me-1"></i> Page 2</small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Clean Glassmorphism Overview Box -->
+                    <div class="modal-desc-box">
+                        <div class="d-flex gap-3 align-items-start">
+                            <i class="fa-solid fa-circle-info text-info mt-1 fs-5"></i>
+                            <div>
+                                <h6 class="text-info fw-bold mb-1">Overview & Summary</h6>
+                                <p id="modalDesc" class="text-light mb-0" style="line-height: 1.7; font-size: 0.95rem;"></p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- PDF Download Option (If Available) -->
+                    <div id="pdfDownloadContainer" class="text-center mt-4" style="display: none;">
+                        <a id="pdfLink" href="#" target="_blank" class="btn btn-outline-glow btn-sm">
+                            <i class="fa-solid fa-file-pdf text-danger me-2"></i> Open Full Document (PDF)
+                        </a>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+ <!-- Enhanced Modern Footer -->
+<footer class="footer-section pt-5 pb-4 mt-5">
+    <div class="container">
+        <div class="row g-4 mb-4">
+            
+            <!-- Column 1: Brand & Bio -->
+            <div class="col-lg-4 col-md-6">
+                <a class="navbar-brand fw-bold text-white fs-4 d-inline-block mb-3" href="#">
+                    <i class="fa-solid fa-terminal text-info me-2"></i>Nishara.dev
+                </a>
+                <p class="text-secondary small mb-3" style="line-height: 1.7;">
+                    Final Year HNDIT Student & Trainee Software Engineer passionate about building modern, scalable web applications and technical solutions.
+                </p>
+                <div class="d-flex gap-2">
+                    <a href="https://linkedin.com/in/nishara-de-silva" target="_blank" class="social-icon-btn" title="LinkedIn">
+                        <i class="fa-brands fa-linkedin-in"></i>
+                    </a>
+                    <a href="https://github.com/Tharu2003" target="_blank" class="social-icon-btn" title="GitHub">
+                        <i class="fa-brands fa-github"></i>
+                    </a>
+                    <a href="mailto:tharushinishara2003@gmail.com" class="social-icon-btn" title="Email">
+                        <i class="fa-solid fa-envelope"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Column 2: Quick Links -->
+            <div class="col-lg-4 col-md-6 ps-lg-5">
+                <h6 class="text-white fw-bold mb-3"><i class="fa-solid fa-link text-info me-2"></i>Quick Links</h6>
+                <ul class="list-unstyled mb-0 d-flex flex-column gap-2 small">
+                    <li><a href="#about" class="footer-link"><i class="fa-solid fa-chevron-right text-info me-2 small"></i>About Me</a></li>
+                    <li><a href="#journey" class="footer-link"><i class="fa-solid fa-chevron-right text-info me-2 small"></i>Education & Journey</a></li>
+                    <li><a href="#skills" class="footer-link"><i class="fa-solid fa-chevron-right text-info me-2 small"></i>Tech Stack</a></li>
+                    <li><a href="#projects" class="footer-link"><i class="fa-solid fa-chevron-right text-info me-2 small"></i>Featured Projects</a></li>
+                    <li><a href="#contact" class="footer-link"><i class="fa-solid fa-chevron-right text-info me-2 small"></i>Contact</a></li>
+                </ul>
+            </div>
+
+            <!-- Column 3: Contact Info & Back to top -->
+            <div class="col-lg-4 col-md-12 d-flex flex-column justify-content-between">
+                <div>
+                    <h6 class="text-white fw-bold mb-3"><i class="fa-solid fa-location-dot text-info me-2"></i>Location</h6>
+                    <p class="text-secondary small mb-2"><i class="fa-solid fa-map-pin me-2 text-info"></i>Galle, Sri Lanka</p>
+                    <p class="text-secondary small mb-0"><i class="fa-solid fa-envelope me-2 text-info"></i>tharushinishara2003@gmail.com</p>
+                </div>
+
+                <div class="mt-4 mt-lg-0 text-lg-end">
+                    <a href="#" class="back-to-top-btn" title="Back to top">
+                        <i class="fa-solid fa-arrow-up"></i>
+                    </a>
+                </div>
+            </div>
+
+        </div>
+
+        <hr class="border-secondary opacity-25 my-4">
+
+        <!-- Bottom Copyright -->
+        <div class="row align-items-center">
+            <div class="col-md-6 text-center text-md-start mb-2 mb-md-0">
+                <p class="mb-0 small text-secondary">
+                    &copy; 2026 <span class="text-white fw-semibold">Nishara De Silva</span>. All rights reserved.
+                </p>
+            </div>
+            <div class="col-md-6 text-center text-md-end">
+                <p class="mb-0 small text-secondary">
+                    Designed & Built with <i class="fa-solid fa-heart text-danger mx-1"></i>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+    <!-- JS Libraries -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.0/vanilla-tilt.min.js"></script>
+
+    <script>
+        AOS.init({ duration: 900, once: true });
+
+        new Typed('#typed-text', {
+            strings: ['Trainee Software Engineer.', 'Full-Stack Developer.', 'Software Engineering Intern.'],
+            typeSpeed: 60, backSpeed: 40, loop: true
+        });
+
+        const cursor = document.getElementById('cursor-glow');
+        let mouseX = 0, mouseY = 0;
+        window.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+            cursor.style.left = mouseX + 'px';
+            cursor.style.top = mouseY + 'px';
+        });
+
+        /* IMAGE MODAL FUNCTION */
+        function openImageModal(imgSrc1, imgSrc2, title, desc, pdfPath) {
+            const img1 = document.getElementById('modalImage1');
+            if (imgSrc1 && imgSrc1 !== '') {
+                img1.src = imgSrc1;
+                document.getElementById('modalImg1Container').style.display = 'block';
+            }
+
+            const img2Container = document.getElementById('modalImg2Container');
+            if (imgSrc2 && imgSrc2 !== '') {
+                document.getElementById('modalImage2').src = imgSrc2;
+                img2Container.style.display = 'block';
+                document.getElementById('modalImg1Container').className = 'col-12 col-md-6';
+            } else {
+                img2Container.style.display = 'none';
+                document.getElementById('modalImg1Container').className = 'col-12 col-md-8';
+            }
+
+            document.getElementById('modalTitle').innerHTML = '<i class="fa-solid fa-file-lines text-info me-2"></i>' + title;
+            document.getElementById('modalDesc').innerText = desc;
+            
+            const pdfContainer = document.getElementById('pdfDownloadContainer');
+            if (pdfPath && pdfPath !== '') {
+                document.getElementById('pdfLink').href = pdfPath;
+                pdfContainer.style.display = 'block';
+            } else {
+                pdfContainer.style.display = 'none';
+            }
+
+            const awardModal = new bootstrap.Modal(document.getElementById('awardModal'));
+            awardModal.show();
+        }
+
+        // Background Constellation Particles
+        const canvas = document.getElementById('particle-canvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 2 + 1;
+                this.speedX = Math.random() * 0.8 - 0.4;
+                this.speedY = Math.random() * 0.8 - 0.4;
+            }
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+                if (this.x > canvas.width) this.x = 0;
+                if (this.x < 0) this.x = canvas.width;
+                if (this.y > canvas.height) this.y = 0;
+                if (this.y < 0) this.y = canvas.height;
+            }
+            draw() {
+                ctx.fillStyle = 'rgba(56, 189, 248, 0.7)';
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        const particleCount = Math.min(Math.floor(window.innerWidth / 15), 90);
+        for (let i = 0; i < particleCount; i++) { particles.push(new Particle()); }
+
+        function animateParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            for (let i = 0; i < particles.length; i++) {
+                particles[i].update();
+                particles[i].draw();
+
+                for (let j = i + 1; j < particles.length; j++) {
+                    const dx = particles[i].x - particles[j].x;
+                    const dy = particles[i].y - particles[j].y;
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+
+                    if (dist < 110) {
+                        ctx.strokeStyle = `rgba(56, 189, 248, ${1 - dist / 110})`;
+                        ctx.lineWidth = 0.5;
+                        ctx.beginPath();
+                        ctx.moveTo(particles[i].x, particles[i].y);
+                        ctx.lineTo(particles[j].x, particles[j].y);
+                        ctx.stroke();
+                    }
+                }
+
+                const mDx = particles[i].x - mouseX;
+                const mDy = particles[i].y - mouseY;
+                const mDist = Math.sqrt(mDx * mDx + mDy * mDy);
+                if (mDist < 120) {
+                    ctx.strokeStyle = `rgba(192, 132, 252, ${1 - mDist / 120})`;
+                    ctx.lineWidth = 0.8;
+                    ctx.beginPath();
+                    ctx.moveTo(particles[i].x, particles[i].y);
+                    ctx.lineTo(mouseX, mouseY);
+                    ctx.stroke();
+                }
+            }
+            requestAnimationFrame(animateParticles);
+        }
+        animateParticles();
+
+        // ANIMATED COUNTER SCRIPT
+        const counters = document.querySelectorAll('.counter-number');
+        let counterStarted = false;
+
+        window.addEventListener('scroll', () => {
+            const counterSection = document.querySelector('.counter-number');
+            if (!counterSection) return;
+            const position = counterSection.getBoundingClientRect().top;
+            const screenPosition = window.innerHeight;
+
+            if (position < screenPosition && !counterStarted) {
+                counterStarted = true;
+                counters.forEach(counter => {
+                    const target = +counter.getAttribute('data-target');
+                    let count = 0;
+                    const speed = 50; 
+                    const inc = target / speed;
+
+                    const updateCount = () => {
+                        count += inc;
+                        if (count < target) {
+                            counter.innerText = Math.ceil(count) + '+';
+                            setTimeout(updateCount, 60);
+                        } else {
+                            counter.innerText = target + '+';
+                        }
+                    };
+                    updateCount();
+                });
+            }
+        });
+    </script>
+</body>
+</html>
